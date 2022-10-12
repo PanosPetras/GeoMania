@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GeoMania</string>
+    <string name="title_home">Αρχική</string>
+    <string name="title_dashboard">Προφίλ</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="hiding_the_map">Hiding the map</string>
+    <string name="submit">Επιβεβαίωση</string>
+    <string name="next_question">Επόμενη ερώτηση</string>
+    <string name="finish_quiz">Finish quiz</string>
+    <string name="congratulations">Συγχαρητήρια!</string>
+    <string name="returnToMainPage">Επιστροφη στην αρχικη σελιδα</string>
+    <string name="geomania">GeoMania</string>
+    <string name="play">Παιξε</string>
+    <string name="answer">Απάντηση</string>
+</resources>
