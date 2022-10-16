@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.geomania"
-        minSdk 21
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -48,7 +48,7 @@ dependencies {
 
     //Maps SDK for Android (requires Google Play Services)
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
-    // Utilities for Maps SDK for Android (requires Google Play Services)
+    //Utilities for Maps SDK for Android (requires Google Play Services)
     implementation 'com.google.maps.android:android-maps-utils:2.4.0'
 
     testImplementation 'junit:junit:4.13.2'

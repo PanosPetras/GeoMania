@@ -7,13 +7,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.data.geojson.GeoJsonLayer
 
 object MapsFunctionality {
     private var marker: Marker? = null
+    private var layer: GeoJsonLayer? = null
 
-    /*fun highlightArea(googleMap: GoogleMap){
+    fun highlightArea(googleMap: GoogleMap){
 
-    }*/
+    }
 
     fun setMapStyle(googleMap: GoogleMap, context: Context, style: Int){
         googleMap.setMapStyle(

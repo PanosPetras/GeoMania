@@ -14,29 +14,15 @@ import com.example.geomania.R
 import com.example.geomania.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-
-    private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-    private lateinit var root: View
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        root = binding.root
+        val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val root = binding.root
 
         root.findViewById<Button>(R.id.playBtn).setOnClickListener {
             play()
         }
 
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun play() {

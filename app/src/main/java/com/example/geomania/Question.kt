@@ -2,14 +2,25 @@ package com.example.geomania
 
 import com.google.android.gms.maps.model.LatLng
 
-data class Question(val type: QuestionType,
-                    val body: String,
-                    val answers: List<String>,
-                    val correctAnswer: Int,
-                    val location: LatLng,
-                    val zoom: Float,
-                    val marker: LatLng?)
+open class Question(
+    val body: String,
+    val location: LatLng,
+    val zoom: Float,
+    val marker: LatLng?)
 
-enum class QuestionType {
-    MapShowsWithQuestion, MapShowsAfterQuestion
-}
+class MChoiceQuestion(
+    body: String,
+    val answers: List<String>,
+    val correctAnswer: Int,
+    location: LatLng,
+    zoom: Float,
+    marker: LatLng?)
+    :Question(body, location, zoom, marker)
+
+class SpellingQuestion(
+    body: String,
+    val correctAnswer: String,
+    location: LatLng,
+    zoom: Float,
+    marker: LatLng?)
+    :Question(body, location, zoom, marker)

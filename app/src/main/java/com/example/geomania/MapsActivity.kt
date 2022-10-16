@@ -1,20 +1,22 @@
 package com.example.geomania
 
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-
 import com.example.geomania.databinding.ActivityMapsBinding
-
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MapStyleOptions
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -62,7 +64,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             submitClicked()
         }
 
-        questions = SQLCommunication.getQuestions()
+        questions = SQLCommunication.getQuestions(intent.getStringExtra("directory")!!)
     }
 
     //Quiz functionality
@@ -88,23 +90,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun checkQuestion() {
-        if (selectedAnswerIndex != -1) {
-            if (selectedAnswerIndex != questions[currentQuestionIndex].correctAnswer) {
-                answersTVs[selectedAnswerIndex].background =
-                    ContextCompat.getDrawable(this, R.drawable.wrong_option_border)
-            } else {
-                score++
-            }
-        }
-
-        answersTVs[questions[currentQuestionIndex].correctAnswer].background =
-            ContextCompat.getDrawable(this, R.drawable.correct_option_border)
-
-        if (questions[currentQuestionIndex].type == QuestionType.MapShowsAfterQuestion) {
-            blankIV.isVisible = false
-            questionTV.setTextColor(ContextCompat.getColor(this, R.color.black))
-
-            MapsFunctionality.setMapStyle(mMap, this, R.raw.style_with_labels)
+        when(questions[currentQuestionIndex]){
+            is MChoiceQuestion -> checkMultipleChoiceQuestion()
+            is SpellingQuestion -> checkSpellingQuestion()
+            else -> TODO()
         }
 
         if (currentQuestionIndex + 1 < questions.count()) {
@@ -115,21 +104,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun showQuestion(){
-        resetUI()
-
         //Get the current question
         val currentQuestion = questions[currentQuestionIndex]
 
-        //Hide the map if needed
-        if(currentQuestion.type == QuestionType.MapShowsAfterQuestion){
-            blankIV.isVisible = true
-            questionTV.setTextColor(ContextCompat.getColor(this, R.color.white))
-        }
+        //Reset the UI of the activity
+        resetUI()
 
-        //Show the current question and the possible answers
+        //Show the current question body
         questionTV.text = currentQuestion.body
-        for(i in 0..3){
-            answersTVs[i].text = currentQuestion.answers[i]
+
+        when(currentQuestion){
+            is MChoiceQuestion -> {
+                showMChoiceOptions(currentQuestion)
+                findViewById<ConstraintLayout>(R.id.mChoiceLayout).visibility = View.VISIBLE
+            }
+            is SpellingQuestion -> {
+                findViewById<ConstraintLayout>(R.id.spellingLayout).visibility = View.VISIBLE
+            }
+            else -> TODO()
         }
 
         //Handle the map
@@ -145,36 +137,86 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //Multiple choice question functionality
+    private fun showMChoiceOptions(currentQuestion: MChoiceQuestion) {
+        for (i in 0..3) {
+            answersTVs[i].text = currentQuestion.answers[i]
+        }
+    }
+
     private fun onAnswerSelected(selectedTV: TextView){
         //Reset the previously selected answer
         if(selectedAnswerIndex > -1){
-            answersTVs[selectedAnswerIndex].background = ContextCompat.getDrawable(this, R.drawable.default_option_border)
+            resetMChoiceTextView(answersTVs[selectedAnswerIndex])
         }
 
         //Highlight the currently selected answer
-        selectedTV.background = ContextCompat.getDrawable(this, R.drawable.selected_option_border)
+        highlightMChoiceTextView(selectedTV)
 
         //Get the index of the currently selected answer
         selectedAnswerIndex = answersTVs.indexOf(selectedTV)
     }
 
-    /*private fun checkMultipleChoiceQuestion(){
+    private fun highlightMChoiceTextView(view: TextView){
+        changeTextViewBackground(view, R.drawable.selected_option_border)
+    }
 
-    }*/
+    private fun resetMChoiceTextView(view: TextView){
+        changeTextViewBackground(view, R.drawable.default_option_border)
+    }
+
+    private fun changeTextViewBackground(view: TextView, background: Int){
+        view.background = ContextCompat.getDrawable(this, background)
+    }
+
+    private fun checkMultipleChoiceQuestion(){
+        val currentQuestion = questions[currentQuestionIndex] as MChoiceQuestion
+        if (selectedAnswerIndex != -1) {
+            if (selectedAnswerIndex != currentQuestion.correctAnswer) {
+                answersTVs[selectedAnswerIndex].background =
+                    ContextCompat.getDrawable(this, R.drawable.wrong_option_border)
+            } else {
+                score++
+            }
+        }
+
+        answersTVs[currentQuestion.correctAnswer].background =
+            ContextCompat.getDrawable(this, R.drawable.correct_option_border)
+    }
 
     //Spelling question functionality
+    private fun checkSpellingQuestion(){
+        val currentQuestion = questions[currentQuestionIndex] as SpellingQuestion
+        val answerET = findViewById<EditText>(R.id.answerET)
+        if(currentQuestion.correctAnswer != answerET.text.toString()){
+            answerET.setBackgroundColor(resources.getColor(R.color.Red, resources.newTheme()))
+        } else {
+            answerET.setBackgroundColor(resources.getColor(R.color.Green, resources.newTheme()))
+            score++
+        }
+    }
 
     //UI functionality
     private fun resetUI(){
         submitBtn.text = getString(R.string.submit)
 
-        answersTVs.forEach {
-            it.background = ContextCompat.getDrawable(this, R.drawable.default_option_border)
-        }
+        resetMChoiceUI()
+        resetSpellingUI()
 
         MapsFunctionality.setMapStyle(mMap, this, R.raw.style_without_labels)
 
         MapsFunctionality.removeMarker()
+    }
+
+    private fun resetMChoiceUI(){
+        answersTVs.forEach {
+            it.background = ContextCompat.getDrawable(this, R.drawable.default_option_border)
+        }
+    }
+
+    private fun resetSpellingUI(){
+        val answerET = findViewById<EditText>(R.id.answerET)
+        answerET.text.clear()
+        answerET.setBackgroundColor(Color.TRANSPARENT)
     }
 
     private fun showEndScreen(){
@@ -192,7 +234,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //Cache the map reference
         mMap = googleMap
 
+        //Do not allow the player to manipulate the map
         mMap.uiSettings.isScrollGesturesEnabled = false
+        mMap.uiSettings.isZoomGesturesEnabled = false
 
         MapsFunctionality.setMapStyle(mMap, this, R.raw.style_without_labels)
 

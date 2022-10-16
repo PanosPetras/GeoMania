@@ -6,10 +6,12 @@
     <string name="hiding_the_map">Hiding the map</string>
     <string name="submit">Επιβεβαίωση</string>
     <string name="next_question">Επόμενη ερώτηση</string>
-    <string name="finish_quiz">Finish quiz</string>
+    <string name="finish_quiz">Τελείωσε το quiz</string>
     <string name="congratulations">Συγχαρητήρια!</string>
     <string name="returnToMainPage">Επιστροφη στην αρχικη σελιδα</string>
     <string name="geomania">GeoMania</string>
     <string name="play">Παιξε</string>
     <string name="answer">Απάντηση</string>
+    <string name="select_category">Επέλεξε κατηγορία</string>
+    <string name="background">Εικόνα</string>
 </resources>
