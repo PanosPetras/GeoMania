@@ -1,7 +1,6 @@
 package com.example.geomania
 
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -19,9 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
-
     private lateinit var mMap: GoogleMap
-    private lateinit var binding: ActivityMapsBinding
 
     private var score = 0
     private var checkedQuestion = false
@@ -38,7 +34,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMapsBinding.inflate(layoutInflater)
+        val binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -46,23 +42,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        blankIV = findViewById(R.id.BlankIV)
-        questionTV = findViewById(R.id.QuestionTV)
-        answersTVs.add(findViewById(R.id.optionOneTV))
-        answersTVs.add(findViewById(R.id.optionTwoTV))
-        answersTVs.add(findViewById(R.id.optionThreeTV))
-        answersTVs.add(findViewById(R.id.optionFourTV))
-        submitBtn = findViewById(R.id.submitBtn)
-
-        answersTVs.forEach { tv ->
-            tv.setOnClickListener{
-                onAnswerSelected(tv)
-            }
-        }
-
-        submitBtn.setOnClickListener{
-            submitClicked()
-        }
+        setupUI()
 
         questions = SQLCommunication.getQuestions(intent.getStringExtra("directory")!!)
     }
@@ -189,13 +169,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val answerET = findViewById<EditText>(R.id.answerET)
         if(currentQuestion.correctAnswer != answerET.text.toString()){
             answerET.setBackgroundColor(resources.getColor(R.color.Red, resources.newTheme()))
+            showRightAnswer(currentQuestion.correctAnswer)
         } else {
             answerET.setBackgroundColor(resources.getColor(R.color.Green, resources.newTheme()))
             score++
         }
     }
 
+    private fun showRightAnswer(answer: String){
+        val correctAnswerTV = findViewById<TextView>(R.id.correctAnswerTV)
+
+        findViewById<TextView>(R.id.cattv).visibility = View.VISIBLE
+        correctAnswerTV.visibility = View.VISIBLE
+
+        correctAnswerTV.text = answer
+    }
+
     //UI functionality
+    private fun setupUI() {
+        blankIV = findViewById(R.id.BlankIV)
+        questionTV = findViewById(R.id.QuestionTV)
+        answersTVs.add(findViewById(R.id.optionOneTV))
+        answersTVs.add(findViewById(R.id.optionTwoTV))
+        answersTVs.add(findViewById(R.id.optionThreeTV))
+        answersTVs.add(findViewById(R.id.optionFourTV))
+        submitBtn = findViewById(R.id.submitBtn)
+
+        answersTVs.forEach { tv ->
+            tv.setOnClickListener {
+                onAnswerSelected(tv)
+            }
+        }
+
+        submitBtn.setOnClickListener {
+            submitClicked()
+        }
+    }
+
     private fun resetUI(){
         submitBtn.text = getString(R.string.submit)
 
@@ -217,6 +227,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val answerET = findViewById<EditText>(R.id.answerET)
         answerET.text.clear()
         answerET.setBackgroundColor(Color.TRANSPARENT)
+        findViewById<TextView>(R.id.correctAnswerTV).visibility = View.INVISIBLE
+        findViewById<TextView>(R.id.cattv).visibility = View.INVISIBLE
     }
 
     private fun showEndScreen(){
@@ -237,6 +249,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //Do not allow the player to manipulate the map
         mMap.uiSettings.isScrollGesturesEnabled = false
         mMap.uiSettings.isZoomGesturesEnabled = false
+        mMap.uiSettings.isZoomControlsEnabled = false
 
         MapsFunctionality.setMapStyle(mMap, this, R.raw.style_without_labels)
 

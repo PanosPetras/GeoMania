@@ -50,16 +50,16 @@ class QuestionBrowserActivity : AppCompatActivity() {
     private fun getDirectoryContents(){
         var reader: BufferedReader? = null
 
-        val fName = if(dir == null) "content.csv" else "$dir/content.csv"
+        val fName = if(dir == null) "Content/content.csv" else "Content/$dir/content.csv"
 
         try {
             reader = BufferedReader(
                 InputStreamReader(assets.open(fName))
             )
 
-            val mLine: String? = reader.readLine()
+            val mLine: String = reader.readText()
 
-            mLine?.let {
+            mLine.let {
                 val contents = mLine.split(",")
 
                 contents.forEach{
@@ -92,7 +92,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
     }
 
     private fun openGame(directory: String){
-        openActivity(MapsActivity::class.java, directory)
+        openActivity(MapsActivity::class.java, "Content/$directory")
     }
 
     private fun goBack(){

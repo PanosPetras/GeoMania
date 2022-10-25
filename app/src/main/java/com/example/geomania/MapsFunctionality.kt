@@ -8,13 +8,41 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import org.json.JSONObject
 
 object MapsFunctionality {
     private var marker: Marker? = null
-    private var layer: GeoJsonLayer? = null
+    private var layers: MutableList<GeoJsonLayer> = mutableListOf()
 
-    fun highlightArea(googleMap: GoogleMap){
+    fun highlightArea(googleMap: GoogleMap, country: String){
+        val jsonData: String
 
+        //Load the polygon data of the requested area
+        try {
+            jsonData =
+                GeoMania.appContext?.assets?.open("GeoJson/Countries/$country.json")?.bufferedReader()
+                    .use { it!!.readText() }
+        } catch (_:Exception){
+            return
+        }
+
+        //Create the layer with the data we just loaded
+        val geoJsonData = JSONObject(jsonData)
+        val layer = GeoJsonLayer(googleMap, geoJsonData)
+        layer.addLayerToMap()
+
+        //Cache the layer
+        layers.add(layer)
+    }
+
+    fun removeHighlighting(){
+        //Remove all layers from map
+        layers.forEach {
+            it.removeLayerFromMap()
+        }
+
+        //Empty list
+        layers.clear()
     }
 
     fun setMapStyle(googleMap: GoogleMap, context: Context, style: Int){
