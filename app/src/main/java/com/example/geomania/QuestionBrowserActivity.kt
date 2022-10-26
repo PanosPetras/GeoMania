@@ -127,6 +127,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
         btn.gravity = 1
         btn.width = dimension
         btn.height = dimension
+        btn.isAllCaps = false
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -139,7 +140,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
             categoryButtonClicked((it as Button).tag.toString())
         }
 
-        btn.setBackgroundColor(this.resources.getColor(R.color.purple_500, this.resources.newTheme()))
+        btn.setBackgroundColor(this.resources.getColor(R.color.Rhythm, this.resources.newTheme()))
 
         return btn
     }
