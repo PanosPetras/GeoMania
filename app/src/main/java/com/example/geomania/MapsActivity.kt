@@ -15,6 +15,8 @@ import com.example.geomania.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import kotlin.math.min
+import kotlin.math.max
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
@@ -170,13 +172,30 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         answerET.isActivated = false
         answerET.isEnabled = false
 
-        if(currentQuestion.correctAnswer.lowercase() != answerET.text.toString().lowercase().replace(" ", "")){
+        if(compareResults(currentQuestion.correctAnswer, answerET.text.toString()) > 1){
             answerET.setBackgroundColor(resources.getColor(R.color.Red, resources.newTheme()))
             showRightAnswer(currentQuestion.correctAnswer)
         } else {
             answerET.setBackgroundColor(resources.getColor(R.color.Green, resources.newTheme()))
             score++
         }
+    }
+
+    private fun compareResults(correctAnswer: String, answer: String) : Int {
+        val caArr = correctAnswer.lowercase().toCharArray()
+        val aArr = answer.lowercase().replace(" ", "").toCharArray()
+
+        val iterations = min(caArr.size, aArr.size)
+
+        var occurrences = 0
+
+        for(i in 0 until iterations){
+            if(caArr[i] == aArr[i]){
+                occurrences++
+            }
+        }
+
+        return max(caArr.size, aArr.size) - occurrences
     }
 
     private fun showRightAnswer(answer: String){

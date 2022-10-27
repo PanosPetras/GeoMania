@@ -20,9 +20,14 @@ class QuestionBrowserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_question_browser)
 
+        //Cache the current directory
         dir = intent.getStringExtra("directory")
+
+        //Get the contents of the current directory and create category buttons for them
         getDirectoryContents()
         createContentButtons()
+        //Empty the contents list
+        contents.clear()
 
         findViewById<Button>(R.id.AQBBackBtn).setOnClickListener {
             goBack()
