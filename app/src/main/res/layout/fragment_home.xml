@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/geomania"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:textSize="28sp"
         android:textColor="@color/white"/>
 

@@ -167,7 +167,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun checkSpellingQuestion(){
         val currentQuestion = questions[currentQuestionIndex] as SpellingQuestion
         val answerET = findViewById<EditText>(R.id.answerET)
-        if(currentQuestion.correctAnswer != answerET.text.toString()){
+        answerET.isActivated = false
+        answerET.isEnabled = false
+
+        if(currentQuestion.correctAnswer.lowercase() != answerET.text.toString().lowercase().replace(" ", "")){
             answerET.setBackgroundColor(resources.getColor(R.color.Red, resources.newTheme()))
             showRightAnswer(currentQuestion.correctAnswer)
         } else {
@@ -226,6 +229,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun resetSpellingUI(){
         val answerET = findViewById<EditText>(R.id.answerET)
         answerET.text.clear()
+        answerET.isActivated = true
+        answerET.isEnabled = true
         answerET.setBackgroundColor(Color.TRANSPARENT)
         findViewById<TextView>(R.id.correctAnswerTV).visibility = View.INVISIBLE
         findViewById<TextView>(R.id.cattv).visibility = View.INVISIBLE
