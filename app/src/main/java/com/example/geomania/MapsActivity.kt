@@ -139,11 +139,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun highlightMChoiceTextView(view: TextView){
-        changeTextViewBackground(view, R.drawable.selected_option_border)
+        changeTextViewBackground(view, R.drawable.borders_selected_option_border)
     }
 
     private fun resetMChoiceTextView(view: TextView){
-        changeTextViewBackground(view, R.drawable.default_option_border)
+        changeTextViewBackground(view, R.drawable.borders_default_option_border)
     }
 
     private fun changeTextViewBackground(view: TextView, background: Int){
@@ -155,14 +155,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (selectedAnswerIndex != -1) {
             if (selectedAnswerIndex != currentQuestion.correctAnswer) {
                 answersTVs[selectedAnswerIndex].background =
-                    ContextCompat.getDrawable(this, R.drawable.wrong_option_border)
+                    ContextCompat.getDrawable(this, R.drawable.borders_wrong_option_border)
             } else {
                 score++
             }
         }
 
         answersTVs[currentQuestion.correctAnswer].background =
-            ContextCompat.getDrawable(this, R.drawable.correct_option_border)
+            ContextCompat.getDrawable(this, R.drawable.borders_correct_option_border)
     }
 
     //Spelling question functionality
@@ -241,7 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun resetMChoiceUI(){
         answersTVs.forEach {
-            it.background = ContextCompat.getDrawable(this, R.drawable.default_option_border)
+            it.background = ContextCompat.getDrawable(this, R.drawable.borders_default_option_border)
         }
     }
 

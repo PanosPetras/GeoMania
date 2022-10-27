@@ -15,4 +15,6 @@
     <string name="select_category">Επέλεξε κατηγορία</string>
     <string name="background">Εικόνα</string>
     <string name="correct_answer">Σωστή απάντηση:</string>
+    <string name="player_icon">Εικόνα παίκτη</string>
+    <string name="username">Όνομα χρήστη</string>
 </resources>

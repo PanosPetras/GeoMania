@@ -9,5 +9,5 @@
                 android:topRightRadius="5dp"/>
         </shape>
     </item>
-    <item android:drawable="@drawable/earth" />
+    <item android:drawable="@drawable/ic_earth" />
 </layer-list>

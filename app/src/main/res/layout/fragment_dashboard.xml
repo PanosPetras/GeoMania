@@ -20,7 +20,8 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/ic_launcher_background"
-            android:foreground="@drawable/ic_launcher_foreground"/>
+            android:foreground="@drawable/ic_launcher_foreground"
+            android:contentDescription="@string/player_icon" />
 
         <EditText
             android:gravity="center_horizontal"
@@ -33,7 +34,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:minWidth="120dp"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:autofillHints="username"
+            android:hint="@string/username"/>
 
         <TextView
             android:id="@+id/levelTV"
