@@ -54,6 +54,16 @@ object User {
             saveUserInfo()
         }
 
+    private var pIcon: Int = R.drawable.uic_earth
+    var icon: Int
+        get() {
+            return pIcon
+        }
+        set(value) {
+            pIcon = value
+            saveUserInfo()
+        }
+
     init{
         fileDir = GeoMania.appContext?.filesDir
         loadUserInfo()
@@ -79,7 +89,7 @@ object User {
             file.createNewFile()
         }
 
-        file.writeText("$username,$level,$experience,$hints")
+        file.writeText("$username,$level,$experience,$hints,$icon")
     }
 
     private fun loadUserInfo(){
@@ -90,11 +100,12 @@ object User {
         if(file.exists()){
             val content = file.readText().split(",")
 
-            if(content.size == 4){
+            if(content.size == 5){
                 pUsername = content[0]
                 pLevel = content[1].toInt()
                 pExperience = content[2].toInt()
                 pHints = content[3].toInt()
+                pIcon = content[4].toInt()
             }
         }
     }

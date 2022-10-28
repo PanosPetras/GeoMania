@@ -7,12 +7,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.data.geojson.GeoJsonLayer
-import org.json.JSONObject
+/*import com.google.maps.android.data.geojson.GeoJsonLayer
+import org.json.JSONObject*/
 
 object MapsFunctionality {
     private var marker: Marker? = null
-    private var layers: MutableList<GeoJsonLayer> = mutableListOf()
+    /*private var layers: MutableList<GeoJsonLayer> = mutableListOf()
 
     fun highlightArea(googleMap: GoogleMap, country: String){
         val jsonData: String
@@ -43,7 +43,7 @@ object MapsFunctionality {
 
         //Empty list
         layers.clear()
-    }
+    }*/
 
     fun setMapStyle(googleMap: GoogleMap, context: Context, style: Int){
         googleMap.setMapStyle(

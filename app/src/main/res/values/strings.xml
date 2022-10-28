@@ -9,7 +9,6 @@
     <string name="finish_quiz">Τελειωσε το quiz</string>
     <string name="congratulations">Συγχαρητήρια!</string>
     <string name="returnToMainPage">Επιστροφη στην αρχικη σελιδα</string>
-    <string name="geomania">GeoMania</string>
     <string name="play">Παιξε</string>
     <string name="answer">Απάντηση</string>
     <string name="select_category">Επέλεξε κατηγορία</string>
@@ -17,4 +16,8 @@
     <string name="correct_answer">Σωστή απάντηση:</string>
     <string name="player_icon">Εικόνα παίκτη</string>
     <string name="username">Όνομα χρήστη</string>
+    <string name="level">Επίπεδο %d</string>
+    <string name="experience">%d XP</string>
+    <string name="icons">Icons</string>
+    <string name="map_icon">Εικονίδιο χάρτη</string>
 </resources>

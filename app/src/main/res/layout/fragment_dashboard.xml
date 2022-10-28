@@ -7,7 +7,7 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:gravity="center_horizontal"
@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/UserIconIV"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/ic_launcher_background"
@@ -51,6 +52,172 @@
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="14sp"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_margin="20dp"
+            app:cardCornerRadius="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/icons"
+                    android:textSize="16sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/uic_mapIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_map"
+                        android:contentDescription="@string/map_icon"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_earthIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_earth"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_old_carIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_old_car"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_trainIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_train"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_planeIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_plane"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/uic_big_benIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_big_ben"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_eiffel_towerIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_eiffel_tower"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_tower_of_pisaIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_tower_of_pisa"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_torri_gateIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_torri_gate"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_brandenburg_gateIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_brandenburg_gate"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/uic_capIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_cap"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_hatIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_hat"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_magnifying_glassIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_magnifying_glass"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_binocularsIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_binoculars"/>
+
+                    <ImageButton
+                        android:id="@+id/uic_paper_planeIB"
+                        android:layout_margin="16dp"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/uic_paper_plane"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
