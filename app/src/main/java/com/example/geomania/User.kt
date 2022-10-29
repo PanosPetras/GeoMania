@@ -15,13 +15,13 @@ object User {
             saveUserInfo()
         }
 
-    private var pLevel: Int = 1
+    private var pLevel = 1
     val level: Int
         get() {
             return pLevel
         }
 
-    private var pExperience: Int = 0
+    private var pExperience = 0
     var experience: Int
         get() {
             return pExperience
@@ -44,17 +44,20 @@ object User {
             saveUserInfo()
         }
 
-    private var pHints: Int = 10
-    var hints: Int
+    private var pCoins = 10
+    var onCoinsChanged: (() -> Unit)? = null
+    var coins: Int
         get() {
-            return pHints
+            return pCoins
         }
         set(value) {
-            pHints = value
+            pCoins = value
+            onCoinsChanged?.invoke()
             saveUserInfo()
         }
 
-    private var pIcon: Int = R.drawable.uic_earth
+    private var pIcon = R.drawable.uic_earth
+    const val iconPrice = 5
     var icon: Int
         get() {
             return pIcon
@@ -64,6 +67,20 @@ object User {
             saveUserInfo()
         }
 
+    private var pAvailableIcons = Array(15) {i -> i == R.drawable.uic_earth - R.drawable.uic_big_ben}
+    var availableIcons: Array<Boolean>
+        get() {
+            return pAvailableIcons
+        }
+        set(value) {
+            pAvailableIcons = value
+            saveUserInfo()
+        }
+
+    fun isIconAvailable(icon: Int) : Boolean{
+        return pAvailableIcons[icon - R.drawable.uic_big_ben]
+    }
+
     init{
         fileDir = GeoMania.appContext?.filesDir
         loadUserInfo()
@@ -72,9 +89,9 @@ object User {
     fun rewardPlayer(score: Int, totalQuestions: Int){
         experience += score + (score * 2 * (11 - level) / 10.0).toInt()
         if(score > totalQuestions * 0.7) {
-            hints++
+            coins++
             if(score == totalQuestions){
-                hints++
+                coins++
             }
         }
     }
@@ -89,7 +106,7 @@ object User {
             file.createNewFile()
         }
 
-        file.writeText("$username,$level,$experience,$hints,$icon")
+        file.writeText("$username,$level,$experience,$coins,$icon,${pAvailableIcons.joinToString(",")}")
     }
 
     private fun loadUserInfo(){
@@ -100,12 +117,15 @@ object User {
         if(file.exists()){
             val content = file.readText().split(",")
 
-            if(content.size == 5){
+            if(content.size == 20){
                 pUsername = content[0]
                 pLevel = content[1].toInt()
                 pExperience = content[2].toInt()
-                pHints = content[3].toInt()
+                pCoins = content[3].toInt()
                 pIcon = content[4].toInt()
+                for(i in 5 until 20){
+                    pAvailableIcons[i - 5] = content[i].toBoolean()
+                }
             }
         }
     }

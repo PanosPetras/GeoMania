@@ -21,6 +21,19 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
 
-        findViewById<TextView>(R.id.hintsTV1).text = "${User.hints}"
+        onCoinsChanged()
+        User.onCoinsChanged = {
+            onCoinsChanged()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        User.onCoinsChanged = null
+    }
+
+    private fun onCoinsChanged(){
+        findViewById<TextView>(R.id.hintsTV1).text = "${User.coins}"
     }
 }

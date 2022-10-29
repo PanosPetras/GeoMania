@@ -18,8 +18,8 @@
     <string name="username">Όνομα χρήστη</string>
     <string name="level">Επίπεδο %d</string>
     <string name="experience">%d XP</string>
-    <string name="icons">Εικονίδια</string>
+    <string name="icons">Icons</string>
     <string name="map_icon">Εικονίδιο χάρτη</string>
-    <string name="earth_description">Εικόνα της Γης</string>
+    <string name="earth_description">Εικόνα της Γης</string>Your location
     <string name="badges">Εμβλήματα</string>
 </resources>
