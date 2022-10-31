@@ -11,7 +11,7 @@
     <string name="returnToMainPage">Επιστροφη στην αρχικη σελιδα</string>
     <string name="play">Παιξε</string>
     <string name="answer">Απάντηση</string>
-    <string name="select_category">Επέλεξε κατηγορία</string>
+    <string name="select_category">Επίλεξε κατηγορία</string>
     <string name="background">Εικόνα</string>
     <string name="correct_answer">Σωστή απάντηση:</string>
     <string name="player_icon">Εικόνα παίκτη</string>
@@ -22,4 +22,7 @@
     <string name="map_icon">Εικονίδιο χάρτη</string>
     <string name="earth_description">Εικόνα της Γης</string>Your location
     <string name="badges">Εμβλήματα</string>
+    <string name="back_button">Το κουμπί επιστροφής</string>
+    <string name="backgrounds">Φόντα</string>
+    <string name="no_internet_connection">Δεν υπάρχει πρόσβαση στο διαδίκτυο.</string>
 </resources>

@@ -33,6 +33,10 @@ class DashboardFragment : Fragment() {
         highlightUnavailableIcons()
         icons.clear()
 
+        User.badges.forEach {
+            root.findViewById<ImageView>(it.id).visibility = View.VISIBLE
+        }
+
         return root
     }
 

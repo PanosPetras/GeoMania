@@ -2,13 +2,14 @@ package com.example.geomania
 
 import com.google.android.gms.maps.model.LatLng
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 
-object SQLCommunication {
-    fun getQuestions(fName: String) : List<Question>{
+object AssetsReader {
+    fun getQuestions(fName: String): List<Question>{
         val list = mutableListOf<Question>()
 
-        val reader = BufferedReader(InputStreamReader(GeoMania.appContext!!.assets.open(fName)))
+        val reader = BufferedReader(InputStreamReader(GeoMania.appContext!!.assets.open("$fName/questions.csv")))
 
         var line = reader.readLine()
         var contents: List<String>
@@ -53,5 +54,56 @@ object SQLCommunication {
         list.shuffle()
 
         return list
+    }
+
+    fun getMilestone(fName: String): String?{
+        return try {
+            val reader =
+                BufferedReader(InputStreamReader(GeoMania.appContext!!.assets.open("$fName/reward.txt")))
+
+            val line = reader.readText()
+            if (line != "") {
+                line
+            } else {
+                null
+            }
+        } catch (e: Exception){
+            null
+        }
+    }
+
+    fun getDirectoryContents(dir: String?): MutableList<String>{
+        var reader: BufferedReader? = null
+        val contents = mutableListOf<String>()
+
+        val fName = if(dir == null) "Content/content.csv" else "Content/$dir/content.csv"
+
+        try {
+            reader = BufferedReader(
+                InputStreamReader(GeoMania.appContext!!.assets.open(fName))
+            )
+
+            val mLine: String = reader.readText()
+
+            mLine.let {
+                val lineContents = mLine.split(",")
+
+                lineContents.forEach{
+                    contents.add(it)
+                }
+            }
+        } catch (e: IOException) {
+            //Handle it
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close()
+                } catch (e: IOException) {
+                    //log the exception
+                }
+            }
+        }
+
+        return contents
     }
 }

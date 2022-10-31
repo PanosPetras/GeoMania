@@ -4,10 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -15,6 +12,7 @@ import com.example.geomania.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlin.math.min
 import kotlin.math.max
 
@@ -32,6 +30,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private val answersTVs = mutableListOf<TextView>()
     private lateinit var submitBtn: Button
     private lateinit var blankIV: ImageView
+    private var milestone: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +45,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupUI()
 
-        questions = SQLCommunication.getQuestions(intent.getStringExtra("directory")!!)
+        val dir = intent.getStringExtra("directory")!!
+        questions = AssetsReader.getQuestions(dir)
+        milestone = AssetsReader.getMilestone(dir)
     }
 
     //Quiz functionality
@@ -57,7 +58,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         } else {
             if(currentQuestionIndex == questions.size - 1){
                 //The player finished the quiz
-                User.rewardPlayer(score, questions.size)
+                User.rewardPlayer(score, questions.size, milestone)
                 showEndScreen()
 
                 return

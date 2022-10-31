@@ -81,26 +81,59 @@ object User {
         return pAvailableIcons[icon - R.drawable.uic_big_ben]
     }
 
+    private val pMilestones: MutableList<String> = mutableListOf()
+    private fun checkIfBadgeIsCompleted(){
+        var flag: Boolean
+        Badge.badges.forEach{ badge ->
+            flag = true
+
+            badge.value.requirements.forEach { req ->
+                if(!pMilestones.contains(req)){
+                    flag = false
+                }
+            }
+
+            if(flag){
+                pBadges.add(badge.value)
+            }
+        }
+    }
+
+    private var pBadges: MutableList<Badge> = mutableListOf()
+    val badges: MutableList<Badge>
+        get() {
+            return pBadges
+        }
+
     init{
         fileDir = GeoMania.appContext?.filesDir
         loadUserInfo()
     }
 
-    fun rewardPlayer(score: Int, totalQuestions: Int){
-        experience += score + (score * 2 * (11 - level) / 10.0).toInt()
+    fun rewardPlayer(score: Int, totalQuestions: Int, milestone: String?){
         if(score > totalQuestions * 0.7) {
-            coins++
+            pCoins++
+
             if(score == totalQuestions){
-                coins++
+                pCoins++
+
+                milestone?.let {
+                    if(!pMilestones.contains(it)) {
+                        pMilestones.add(it)
+                        checkIfBadgeIsCompleted()
+                    }
+                }
             }
         }
+
+        experience += score + (score * 2 * (11 - level) / 10.0).toInt()
     }
 
     //Save/Load user data from memory
     private fun saveUserInfo(){
         if(fileDir == null) return
 
-        val file = File(fileDir, "User Info.txt")
+        val file = File(fileDir, "User Info.inf")
 
         if(!file.exists()){
             file.createNewFile()
@@ -112,7 +145,7 @@ object User {
     private fun loadUserInfo(){
         if(fileDir == null) return
 
-        val file = File(fileDir, "User Info.txt")
+        val file = File(fileDir, "User Info.inf")
 
         if(file.exists()){
             val content = file.readText().split(",")

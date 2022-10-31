@@ -7,9 +7,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 
 
 class QuestionBrowserActivity : AppCompatActivity() {
@@ -24,7 +21,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
         dir = intent.getStringExtra("directory")
 
         //Get the contents of the current directory and create category buttons for them
-        getDirectoryContents()
+        contents = AssetsReader.getDirectoryContents(dir)
         createContentButtons()
         //Empty the contents list
         contents.clear()
@@ -52,38 +49,6 @@ class QuestionBrowserActivity : AppCompatActivity() {
         }
     }
 
-    private fun getDirectoryContents(){
-        var reader: BufferedReader? = null
-
-        val fName = if(dir == null) "Content/content.csv" else "Content/$dir/content.csv"
-
-        try {
-            reader = BufferedReader(
-                InputStreamReader(assets.open(fName))
-            )
-
-            val mLine: String = reader.readText()
-
-            mLine.let {
-                val contents = mLine.split(",")
-
-                contents.forEach{
-                    this.contents.add(it)
-                }
-            }
-        } catch (e: IOException) {
-            //Handle it
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close()
-                } catch (e: IOException) {
-                    //log the exception
-                }
-            }
-        }
-    }
-
     private fun categoryButtonClicked(directory: String){
         if(!directory.contains(".")){
             openNewFolder(directory)
@@ -97,7 +62,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
     }
 
     private fun openGame(directory: String){
-        openActivity(MapsActivity::class.java, "Content/$directory")
+        openActivity(MapsActivity::class.java, "Content/$directory".replace("/questions.csv", ""))
     }
 
     private fun goBack(){

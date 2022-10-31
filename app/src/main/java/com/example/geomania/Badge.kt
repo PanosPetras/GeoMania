@@ -1,5 +1,12 @@
 package com.example.geomania
 
-open class Badge(val name: String, val icon: Int)
+import java.io.Serializable
 
-object GreeceBadge : Badge("Greece Badge", R.drawable.ic_parthenon)
+open class Badge(val name: String, val id: Int, val requirements: List<String>) {
+    companion object {
+        @Transient
+        var badges = mapOf<Int, Badge>(Pair(GreeceBadge.id, GreeceBadge))
+    }
+}
+
+object GreeceBadge : Badge("Greece Badge", R.id.badge_GR_IV, listOf("SpellingGR", "MChoiceGR"))
