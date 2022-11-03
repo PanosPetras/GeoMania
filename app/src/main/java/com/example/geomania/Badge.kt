@@ -5,7 +5,7 @@ import java.io.Serializable
 open class Badge(val name: String, val id: Int, val requirements: List<String>) {
     companion object {
         @Transient
-        var badges = mapOf<Int, Badge>(Pair(GreeceBadge.id, GreeceBadge))
+        var badges = listOf(GreeceBadge)
     }
 }
 

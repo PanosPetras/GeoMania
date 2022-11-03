@@ -87,14 +87,14 @@ object User {
         Badge.badges.forEach{ badge ->
             flag = true
 
-            badge.value.requirements.forEach { req ->
+            badge.requirements.forEach { req ->
                 if(!pMilestones.contains(req)){
                     flag = false
                 }
             }
 
             if(flag){
-                pBadges.add(badge.value)
+                pBadges.add(badge)
             }
         }
     }
@@ -133,32 +133,33 @@ object User {
     private fun saveUserInfo(){
         if(fileDir == null) return
 
-        val file = File(fileDir, "User Info.inf")
+        var file = File(fileDir, "User Info.inf")
+        var content = "$username,$level,$experience,$coins,$icon,${pAvailableIcons.joinToString(",")}"
 
-        if(!file.exists()){
-            file.createNewFile()
-        }
+        FileIO.storeString(file, content)
 
-        file.writeText("$username,$level,$experience,$coins,$icon,${pAvailableIcons.joinToString(",")}")
+        file = File(fileDir, "Badge Info.inf")
+        content = pMilestones.joinToString(",")
+
+        FileIO.storeString(file, content)
     }
 
     private fun loadUserInfo(){
         if(fileDir == null) return
 
         val file = File(fileDir, "User Info.inf")
+        val fileData = FileIO.loadString(file) ?: return
 
-        if(file.exists()){
-            val content = file.readText().split(",")
+        val content = fileData.split(",")
 
-            if(content.size == 20){
-                pUsername = content[0]
-                pLevel = content[1].toInt()
-                pExperience = content[2].toInt()
-                pCoins = content[3].toInt()
-                pIcon = content[4].toInt()
-                for(i in 5 until 20){
-                    pAvailableIcons[i - 5] = content[i].toBoolean()
-                }
+        if(content.size == 20){
+            pUsername = content[0]
+            pLevel = content[1].toInt()
+            pExperience = content[2].toInt()
+            pCoins = content[3].toInt()
+            pIcon = content[4].toInt()
+            for(i in 5 until 20){
+                pAvailableIcons[i - 5] = content[i].toBoolean()
             }
         }
     }
