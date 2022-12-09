@@ -12,7 +12,7 @@ class ResultActivity : AppCompatActivity() {
         setContentView(R.layout.activity_result)
 
         findViewById<TextView>(R.id.congratsTV).text = User.username
-        findViewById<TextView>(R.id.scoreTV).text = "Το σκορ σου ήταν ${intent.getStringExtra("score")}"
+        findViewById<TextView>(R.id.scoreTV).text = getString(R.string.result_score, intent.getStringExtra("score"))
 
         findViewById<Button>(R.id.returnBtn).setOnClickListener {
             returnToMainMenu()

@@ -25,4 +25,5 @@
     <string name="back_button">Το κουμπί επιστροφής</string>
     <string name="backgrounds">Φόντα</string>
     <string name="no_internet_connection">Δεν υπάρχει πρόσβαση στο διαδίκτυο.</string>
+    <string name="result_score">Το σκορ σου ήταν %s</string>
 </resources>

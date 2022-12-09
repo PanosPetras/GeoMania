@@ -4,7 +4,9 @@ import java.io.File
 
 object FileIO {
     fun storeString(file: File, content: String){
-        if(!file.exists()) return
+        if(!file.exists()) {
+            file.createNewFile()
+        }
 
         file.writeText(content)
     }

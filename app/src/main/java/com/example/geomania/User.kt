@@ -81,7 +81,7 @@ object User {
         return pAvailableIcons[icon - R.drawable.uic_big_ben]
     }
 
-    private val pMilestones: MutableList<String> = mutableListOf()
+    private var pMilestones: MutableList<String> = mutableListOf()
     private fun checkIfBadgeIsCompleted(){
         var flag: Boolean
         Badge.badges.forEach{ badge ->
@@ -126,7 +126,7 @@ object User {
             }
         }
 
-        experience += score + (score * 2 * (11 - level) / 10.0).toInt()
+        experience += score + (score * 22 * (11 - level) / 10.0).toInt()
     }
 
     //Save/Load user data from memory
@@ -147,8 +147,8 @@ object User {
     private fun loadUserInfo(){
         if(fileDir == null) return
 
-        val file = File(fileDir, "User Info.inf")
-        val fileData = FileIO.loadString(file) ?: return
+        var file = File(fileDir, "User Info.inf")
+        var fileData = FileIO.loadString(file) ?: return
 
         val content = fileData.split(",")
 
@@ -162,5 +162,11 @@ object User {
                 pAvailableIcons[i - 5] = content[i].toBoolean()
             }
         }
+
+        file = File(fileDir, "Badge Info.inf")
+        fileData = FileIO.loadString(file) ?: return
+
+        pMilestones = fileData.split(",").toMutableList()
+        checkIfBadgeIsCompleted()
     }
 }
