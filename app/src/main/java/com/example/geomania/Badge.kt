@@ -2,6 +2,7 @@ package com.example.geomania
 
 open class Badge(val name: String, val id: Int, val requirements: List<String>) {
     companion object {
+        //List with all the badge objects
         var badges = listOf(GreeceBadge, WorldBadge)
     }
 }

@@ -5,16 +5,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 
-class ResultActivity : AppCompatActivity() {
+class FailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_result)
+        setContentView(R.layout.activity_fail)
 
-        findViewById<TextView>(R.id.congratsTV).text = User.username
-        findViewById<TextView>(R.id.scoreTV).text = getString(R.string.result_score, intent.getStringExtra("score"))
+        //Show the username
+        findViewById<TextView>(R.id.usernameFailTV).text = User.username
 
-        findViewById<Button>(R.id.returnBtn).setOnClickListener {
+        findViewById<Button>(R.id.returnToQBBtn).setOnClickListener {
             returnToQuestionBrowser()
         }
     }

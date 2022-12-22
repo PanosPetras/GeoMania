@@ -45,19 +45,21 @@ object User {
         }
 
     private var pCoins = 10
-    var onCoinsChanged: (() -> Unit)? = null
+    var onCoinsChanged: ((Int) -> Unit)? = null
     var coins: Int
         get() {
             return pCoins
         }
         set(value) {
-            pCoins = value
-            onCoinsChanged?.invoke()
+            val prevVal = pCoins
+            pCoins = if(value >= 0) value else 0
+            if(prevVal != pCoins) onCoinsChanged?.invoke(pCoins - prevVal)
+
             saveUserInfo()
         }
 
     private var pIcon = R.drawable.uic_earth
-    const val iconPrice = 5
+    const val iconPrice = 10
     var icon: Int
         get() {
             return pIcon
@@ -110,18 +112,20 @@ object User {
         loadUserInfo()
     }
 
+    fun correctAnswer(){
+        coins++
+    }
+
+    fun wrongAnswer(){
+        coins -= 2
+    }
+
     fun rewardPlayer(score: Int, totalQuestions: Int, milestone: String?){
-        if(score > totalQuestions * 0.7) {
-            pCoins++
-
-            if(score == totalQuestions){
-                pCoins++
-
-                milestone?.let {
-                    if(!pMilestones.contains(it)) {
-                        pMilestones.add(it)
-                        checkIfBadgeIsCompleted()
-                    }
+        if(score == totalQuestions){
+            milestone?.let {
+                if(!pMilestones.contains(it)) {
+                    pMilestones.add(it)
+                    checkIfBadgeIsCompleted()
                 }
             }
         }

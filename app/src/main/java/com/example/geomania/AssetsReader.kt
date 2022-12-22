@@ -7,16 +7,21 @@ import java.io.InputStreamReader
 
 object AssetsReader {
     fun getQuestions(fName: String): List<Question>{
+        //Create an empty list
         val list = mutableListOf<Question>()
 
+        //Fetch the contents of the given file
         val reader = BufferedReader(InputStreamReader(GeoMania.appContext!!.assets.open("$fName/questions.csv")))
 
         var line = reader.readLine()
         var contents: List<String>
+
+        //While the file has lines to read
         while(line != null){
             contents = line.split(",")
 
             try {
+                //Try to parse the current line as a Question object
                 list.add(
                     when(contents[0].toInt()) {
                         1 -> MChoiceQuestion(
@@ -40,17 +45,19 @@ object AssetsReader {
                                 else -> LatLng(contents[6].toDouble(), contents[7].toDouble())
                             }
                         )
-                        else -> TODO()
+                        else -> break
                     }
                 )
             }
             catch (_: Exception){
-
+                //The line couldn't be parsed, just skip it
             }
 
+            //Get the next line of the file
             line = reader.readLine()
         }
 
+        //Shuffle the list so that the questions are on a random order
         list.shuffle()
 
         return list
@@ -58,6 +65,7 @@ object AssetsReader {
 
     fun getMilestone(fName: String): String?{
         return try {
+            //Fetch the contents of the given file
             val reader =
                 BufferedReader(InputStreamReader(GeoMania.appContext!!.assets.open("$fName/reward.txt")))
 
@@ -65,9 +73,11 @@ object AssetsReader {
             if (line != "") {
                 line
             } else {
+                //If the file was empty, return null
                 null
             }
         } catch (e: Exception){
+            //If the file couldn't read, return null
             null
         }
     }
@@ -76,9 +86,11 @@ object AssetsReader {
         var reader: BufferedReader? = null
         val contents = mutableListOf<String>()
 
+        //Create the to the content file of the directory
         val fName = if(dir == null) "Content/content.csv" else "Content/$dir/content.csv"
 
         try {
+            //Fetch the contents of the given directory from the content.csv file
             reader = BufferedReader(
                 InputStreamReader(GeoMania.appContext!!.assets.open(fName))
             )
@@ -92,14 +104,14 @@ object AssetsReader {
                     contents.add(it)
                 }
             }
-        } catch (e: IOException) {
-            //Handle it
+        } catch (_: IOException) {
+            //Couldn't read the file, will return an empty list
         } finally {
+            //Close the reader
             if (reader != null) {
                 try {
                     reader.close()
-                } catch (e: IOException) {
-                    //log the exception
+                } catch (_: IOException) {
                 }
             }
         }

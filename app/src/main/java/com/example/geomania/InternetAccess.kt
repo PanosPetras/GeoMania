@@ -7,8 +7,12 @@ import android.net.NetworkCapabilities
 
 @SuppressLint("MissingPermission")
 fun isNetworkAvailable(context: Context): Boolean {
+    //The following code was copied from StackOverflow
+    //Cannot remember the thread
+
     val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val nw = connectivityManager.activeNetwork ?: return false
+
     val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
     return when {
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true

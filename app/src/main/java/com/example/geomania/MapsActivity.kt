@@ -3,6 +3,7 @@ package com.example.geomania
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.snackbar.Snackbar
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.math.max
 
@@ -20,6 +23,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
 
     private var score = 0
+    private var mistakes = 0
     private var checkedQuestion = false
 
     private var currentQuestionIndex = 0
@@ -45,9 +49,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupUI()
 
+        //Get the directory of the questions for this quiz
         val dir = intent.getStringExtra("directory")!!
+
+        //Fetch the questions
         questions = AssetsReader.getQuestions(dir)
         milestone = AssetsReader.getMilestone(dir)
+
+        User.onCoinsChanged = {
+            showCoinBalanceChange(it)
+        }
     }
 
     //Quiz functionality
@@ -66,9 +77,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 //Show the next question
                 nextQuestion()
                 showQuestion()
-            }
 
-            checkedQuestion = false
+                checkedQuestion = false
+            }
         }
     }
 
@@ -79,6 +90,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             else -> TODO()
         }
 
+        //If the player has made 3 mistakes in a row, end the quiz
+        if(mistakes >= 3){
+            showFailScreen()
+        }
+
+        //Update the confirm button's text
         if (currentQuestionIndex + 1 < questions.count()) {
             submitBtn.text = getString(R.string.next_question)
         } else {
@@ -153,15 +170,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun checkMultipleChoiceQuestion(){
         val currentQuestion = questions[currentQuestionIndex] as MChoiceQuestion
-        if (selectedAnswerIndex != -1) {
-            if (selectedAnswerIndex != currentQuestion.correctAnswer) {
+
+        if (selectedAnswerIndex != currentQuestion.correctAnswer) {
+            //If the player has selected an answer, highlight it as wrong
+            if(selectedAnswerIndex != -1) {
                 answersTVs[selectedAnswerIndex].background =
                     ContextCompat.getDrawable(this, R.drawable.borders_wrong_option_border)
-            } else {
-                score++
             }
+
+            mistakes++
+            User.wrongAnswer()
+        } else {
+            score++
+            mistakes = 0
+            User.correctAnswer()
         }
 
+        //Highlight the correct answer
         answersTVs[currentQuestion.correctAnswer].background =
             ContextCompat.getDrawable(this, R.drawable.borders_correct_option_border)
     }
@@ -170,19 +195,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun checkSpellingQuestion(){
         val currentQuestion = questions[currentQuestionIndex] as SpellingQuestion
         val answerET = findViewById<EditText>(R.id.answerET)
+
         answerET.isActivated = false
         answerET.isEnabled = false
 
+        //Check if the given answer and the correct answer have more than 1 different character
         if(compareResults(currentQuestion.correctAnswer, answerET.text.toString()) > 1){
+            //Highlight the given answer as wrong
             answerET.setBackgroundColor(resources.getColor(R.color.Red, resources.newTheme()))
+            //Show the correct answer
             showRightAnswer(currentQuestion.correctAnswer)
+
+            mistakes++
+            User.wrongAnswer()
         } else {
+            //Highlight the given answer as correct
             answerET.setBackgroundColor(resources.getColor(R.color.Green, resources.newTheme()))
+
             score++
+            mistakes = 0
+            User.correctAnswer()
         }
     }
 
     private fun compareResults(correctAnswer: String, answer: String) : Int {
+        //Convert both string to lowercase character arrays
         val caArr = correctAnswer.lowercase().toCharArray()
         val aArr = answer.lowercase().replace(" ", "").toCharArray()
 
@@ -190,12 +227,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         var occurrences = 0
 
+        //Check how similar the two strings are
         for(i in 0 until iterations){
             if(caArr[i] == aArr[i]){
                 occurrences++
             }
         }
 
+        //Return the number of characters that are different between the two string
         return max(caArr.size, aArr.size) - occurrences
     }
 
@@ -209,6 +248,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //UI functionality
+    private fun showCoinBalanceChange(dC: Int) {
+        findViewById<TextView>(R.id.dcTV).text = dC.toString()
+        val ll = findViewById<LinearLayout>(R.id.dCLL)
+        ll.visibility = View.VISIBLE
+
+        Executors.newSingleThreadScheduledExecutor().schedule({
+            for(i in 10 downTo 1){
+                ll.alpha = i / 10f;
+                Thread.sleep(75);
+            }
+
+            ll.visibility = View.INVISIBLE
+            ll.alpha = 1f;
+        }, 1, TimeUnit.SECONDS)
+    }
+
     private fun setupUI() {
         blankIV = findViewById(R.id.BlankIV)
         questionTV = findViewById(R.id.QuestionTV)
@@ -247,6 +302,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun resetSpellingUI(){
+        //Just UI code, oof boring stuff
         val answerET = findViewById<EditText>(R.id.answerET)
         answerET.text.clear()
         answerET.isActivated = true
@@ -259,6 +315,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun showEndScreen(){
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("score", "$score/${questions.size}")
+
+        startActivity(intent)
+
+        finish()
+    }
+
+    private fun showFailScreen(){
+        val intent = Intent(this, FailActivity::class.java)
 
         startActivity(intent)
 

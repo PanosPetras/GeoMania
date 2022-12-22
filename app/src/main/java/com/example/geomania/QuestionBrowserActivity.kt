@@ -67,6 +67,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
 
     private fun goBack(){
         if(dir != null) {
+            //Remove the last directory name from the string
             val rb = dir!!.split("/").toMutableList()
             rb.remove(rb.last())
 
@@ -75,6 +76,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
 
             openActivity(QuestionBrowserActivity::class.java, newDir)
         } else {
+            //If we were at the top of the directory, return to the main menu
             openActivity(MainActivity::class.java, "")
         }
     }
@@ -90,6 +92,7 @@ class QuestionBrowserActivity : AppCompatActivity() {
 
     //UI Functionality
     private fun createMenuButton(): Button{
+        //Just create a new button, UI code
         val dm = resources.displayMetrics
         val dimension = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 90f, dm).toInt()
 

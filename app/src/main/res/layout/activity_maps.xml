@@ -37,6 +37,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/dCLL"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginEnd="100dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="UseCompoundDrawables"
+            android:visibility="invisible">
+
+            <TextView
+                android:id="@+id/dcTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="24sp"/>
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/ic_coins" />
+
+        </LinearLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mChoiceLayout"
             android:layout_width="match_parent"
