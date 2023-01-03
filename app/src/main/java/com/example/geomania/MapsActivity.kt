@@ -33,7 +33,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var questionTV: TextView
     private val answersTVs = mutableListOf<TextView>()
     private lateinit var submitBtn: Button
-    private lateinit var blankIV: ImageView
     private var milestone: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -265,7 +264,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupUI() {
-        blankIV = findViewById(R.id.BlankIV)
         questionTV = findViewById(R.id.QuestionTV)
         answersTVs.add(findViewById(R.id.optionOneTV))
         answersTVs.add(findViewById(R.id.optionTwoTV))

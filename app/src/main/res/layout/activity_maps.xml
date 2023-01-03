@@ -11,14 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MapsActivity"/>
-
-    <ImageView
-        android:id="@+id/BlankIV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_gradient"
-        android:visibility="invisible"
-        android:contentDescription="@string/hiding_the_map"/>
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
